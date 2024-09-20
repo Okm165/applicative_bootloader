@@ -24,7 +24,7 @@ The bootloader operates in two stages:
 
 ### Use Case
 
-The primary use case for the Applicative Bootloader is to merge multiple task proofs into a single proof, keeping that individual tasks outputs are accessible, creating a merged proof that is scalable for an arbitrary number of tasks, optimizing public memory usage, preventing it from growing indefinitely as the complexity of the proof tree increases.
+The primary use case for the Applicative Bootloader is to merge multiple task proofs into a single proof that is scalable for an arbitrary number of tasks, optimizing public memory usage, preventing it from growing indefinitely as the complexity of the proof tree increases and applying custom aggregation logic defined externally.
 
 <p align="center">
   <img src=".github/assets/proof_merging.svg" alt="Proof Merging" width="800"/>
