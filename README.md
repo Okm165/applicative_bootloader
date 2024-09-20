@@ -13,8 +13,8 @@ The trace of this run is then proven, allowing the data structure to continue bu
 
 The bootloader operates in two stages:
 
-1. **Proof Verification and Output Extraction:** A Cairo0 verifier multi-task bootloader verifies multiple task proofs.
-2. **Output Merging:** A single-task bootloader applies the merging logic to the extracted outputs.
+1. **Proof Verification and Output Extraction:** A Cairo0 verifier multi-task bootloader verifies multiple proofs.
+2. **Output Merging:** A single-task bootloader applies the output merging logic to the extracted outputs.
 
 <p align="center">
   <img src=".github/assets/applicative_bootloader.svg" alt="Applicative Bootloader Structure" width="800"/>
@@ -24,7 +24,7 @@ The bootloader operates in two stages:
 
 ### Use Case
 
-The primary use case for the Applicative Bootloader is to merge multiple task proofs into a single proof. This ensures that the outputs of individual tasks are preserved, creating a merged proof that is scalable for an arbitrary number of tasks. The process optimizes public memory usage, preventing it from growing indefinitely as the complexity of the proof tree increases.
+The primary use case for the Applicative Bootloader is to merge multiple task proofs into a single proof, keeping that individual tasks outputs are accessible, creating a merged proof that is scalable for an arbitrary number of tasks, optimizing public memory usage, preventing it from growing indefinitely as the complexity of the proof tree increases.
 
 <p align="center">
   <img src=".github/assets/proof_merging.svg" alt="Proof Merging" width="800"/>
