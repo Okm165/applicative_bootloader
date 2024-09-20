@@ -1,7 +1,3 @@
-Here's an improved version of the README with centered images and a more polished, visually appealing layout:
-
----
-
 # Applicative Bootloader
 
 **Applicative Bootloader** is a Cairo0 program designed to aggregate and merge proofs in a tree-like structure. It performs two main tasks: verifying child proofs and applying merge operations on the outputs of child proofs. The process involves:
