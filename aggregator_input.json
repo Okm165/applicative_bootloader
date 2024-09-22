@@ -1,0 +1,18 @@
+{
+    "aggregator_claim": {
+        "node_left": {
+            "a_start": 1,
+            "b_start": 1,
+            "n": 10,
+            "a_end": 89,
+            "b_end": 144
+        },
+        "node_right": {
+            "a_start": 89,
+            "b_start": 144,
+            "n": 10,
+            "a_end": 10946,
+            "b_end": 17711
+        }
+    }
+}
