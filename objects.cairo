@@ -14,5 +14,6 @@ struct NodeResult {
 
 struct ApplicativeResult {
     aggregator_hash: felt,
+    applicative_bootloader_hash: felt,
     node_result: NodeResult,
 }

@@ -1,3 +1,4 @@
+from typing import List
 import marshmallow_dataclass
 from starkware.starkware_utils.validated_dataclass import ValidatedMarshmallowDataclass
 from starkware.starkware_utils.validated_dataclass import (
@@ -23,16 +24,15 @@ class NodeResult(ValidatedMarshmallowDataclass):
 @marshmallow_dataclass.dataclass(frozen=True)
 class ApplicativeResult(ValidatedMarshmallowDataclass):
     aggregator_hash: int
+    applicative_bootloader_hash: int
     node_result: NodeResult
 
 @marshmallow_dataclass.dataclass(frozen=True)
 class AggregatorClaim(ValidatedMarshmallowDataclass):
-    node_left: ApplicativeResult
-    node_right: ApplicativeResult
+    nodes: List[ApplicativeResult]
 
 
 @marshmallow_dataclass.dataclass(frozen=True)
 class AggregatorResult(ValidatedMarshmallowDataclass):
-    node_left_output_hash: int
-    node_right_output_hash: int
+    node_output_hashes: List[int]
     node_result: ApplicativeResult
