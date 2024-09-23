@@ -10,7 +10,7 @@ func main{output_ptr: felt*, pedersen_ptr: felt*, range_check_ptr: felt*, bitwis
     let (__fp__, _) = get_fp_and_pc();
 
     local fibonacci_claim: NodeClaim*;
-    %{ 
+    %{
         from objects import NodeClaim
         ids.fibonacci_claim = segments.gen_arg(vars(
             NodeClaim.Schema().load(program_input['fibonacci_claim'])
@@ -19,7 +19,7 @@ func main{output_ptr: felt*, pedersen_ptr: felt*, range_check_ptr: felt*, bitwis
 
     let (a_end, b_end) = fib(fibonacci_claim.a_start, fibonacci_claim.b_start, fibonacci_claim.n);
 
-    local fibonacci_result: NodeResult = NodeResult (
+    local node_result: NodeResult = NodeResult(
         a_start=fibonacci_claim.a_start,
         b_start=fibonacci_claim.b_start,
         n=fibonacci_claim.n,
@@ -27,11 +27,7 @@ func main{output_ptr: felt*, pedersen_ptr: felt*, range_check_ptr: felt*, bitwis
         b_end=b_end,
     );
 
-    memcpy(
-        dst=output_ptr,
-        src=&fibonacci_result,
-        len=NodeResult.SIZE,
-    );
+    memcpy(dst=output_ptr, src=&node_result, len=NodeResult.SIZE);
 
     let output_ptr = &output_ptr[NodeResult.SIZE];
 

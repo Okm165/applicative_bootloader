@@ -11,3 +11,8 @@ struct NodeResult {
     a_end: felt,
     b_end: felt,
 }
+
+struct ApplicativeResult {
+    aggregator_hash: felt,
+    node_result: NodeResult,
+}

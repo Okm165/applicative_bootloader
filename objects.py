@@ -20,15 +20,19 @@ class NodeResult(ValidatedMarshmallowDataclass):
     a_end: int
     b_end: int
 
+@marshmallow_dataclass.dataclass(frozen=True)
+class ApplicativeResult(ValidatedMarshmallowDataclass):
+    aggregator_hash: int
+    node_result: NodeResult
 
 @marshmallow_dataclass.dataclass(frozen=True)
 class AggregatorClaim(ValidatedMarshmallowDataclass):
-    node_left: NodeResult
-    node_right: NodeResult
+    node_left: ApplicativeResult
+    node_right: ApplicativeResult
 
 
 @marshmallow_dataclass.dataclass(frozen=True)
 class AggregatorResult(ValidatedMarshmallowDataclass):
-    node_left_hash: int
-    node_right_hash: int
-    node_result: NodeResult
+    node_left_output_hash: int
+    node_right_output_hash: int
+    node_result: ApplicativeResult
