@@ -2,13 +2,14 @@
 
 from starkware.cairo.bootloaders.simple_bootloader.run_simple_bootloader import (
     run_simple_bootloader,
-    verify_non_negative,
 )
 from starkware.cairo.common.cairo_builtins import HashBuiltin, PoseidonBuiltin
-from starkware.cairo.common.hash import hash2
+from starkware.cairo.common.alloc import alloc
 from starkware.cairo.common.memcpy import memcpy
 from starkware.cairo.common.registers import get_fp_and_pc
 from starkware.cairo.cairo_verifier.objects import CairoVerifierOutput
+from starkware.cairo.common.builtin_poseidon.poseidon import poseidon_hash_many
+from objects import BootloaderOutput, bootloader_output_extract_output_hashes
 
 func main{
     output_ptr: felt*,
@@ -111,7 +112,9 @@ func main{
     let nodes_len = bootloader_output_length / BootloaderOutput.SIZE;
     let (nodes_extracted: felt*) = alloc();
     bootloader_output_extract_output_hashes(
-        list=bootloader_output_start[1], len=nodes_len, output=nodes_extracted
+        list=cast(&bootloader_output_start[1], BootloaderOutput*),
+        len=nodes_len,
+        output=nodes_extracted,
     );
     let (input_hash: felt) = poseidon_hash_many(n=nodes_len, elements=nodes_extracted);
 
