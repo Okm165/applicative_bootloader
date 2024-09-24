@@ -2,6 +2,7 @@
     "aggregator_claim": {
         "node_left": {
             "aggregator_hash": 0,
+            "applicative_bootloader_hash": 0,
             "node_result": {
                 "a_start": 1,
                 "b_start": 1,
@@ -12,6 +13,7 @@
         },
         "node_right": {
             "aggregator_hash": 0,
+            "applicative_bootloader_hash": 0,
             "node_result": {
                 "a_start": 89,
                 "b_start": 144,

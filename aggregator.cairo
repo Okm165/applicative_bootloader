@@ -17,9 +17,12 @@ func main{
 
     let (__fp__, _) = get_fp_and_pc();
 
-    local nodes: ApplicativeResult*;
-    local nodes_len: felt252;
+    local nodes_len;
+    local nodes: ApplicativeResult*; // input to aggregator
+    local applicative_result: ApplicativeResult; // output of aggregator
 
+    // Guess the inputs of the aggregator program
+    // this is later checked for in applicative bootloader that this input comes from children in lower level of tree
     %{
         from objects import AggregatorClaim
 
@@ -29,7 +32,6 @@ func main{
         ids.nodes_len = len(aggregator_claim.nodes)
     %}
 
-    local applicative_result: ApplicativeResult;
 
     if (nodes_len == 1) {
         let node = nodes[0];
@@ -46,7 +48,8 @@ func main{
                 b_end=node.node_result.b_end,
                 )
             );
-    } else {
+    }
+    if (nodes_len == 2) {
         let node_left = nodes[0];
         let node_right = nodes[1];
 
@@ -69,33 +72,24 @@ func main{
                 )
             );
     }
+    // Not supported to merge more then 2 nodes for now, will impl generic solution later so arbitrary positove integer num of nodes can be merged
 
-    let (nodes_hashed: felt*) = alloc();
-    hash_nodes(nodes=nodes, nodes_len=nodes_len, output=nodes_hashed);
+    let (hashed_results: felt*) = alloc();
+    applicative_results_calculate_hashes(list=nodes, len=nodes_len, output=hashed_results);
 
     // This represents the "input" of the aggregator, whose correctness is later verified
-    // by the bootloader by running the Cairo verifier.
-    let (input_hash: felt) = poseidon_hash_many(n=nodes_len, elements=nodes_hashed);
+    // by the simple_bootloader by running the Cairo verifiers.
+    // cairo0 verifiers will calculate same value by aquireing outputs from verified nodes
+    // later they will calculate poseidon hash of this output = poseidon([output_hash <=> poseidon(ApplicativeResult from verified node)])
+    let (input_hash: felt) = poseidon_hash_many(n=nodes_len, elements=hashed_results);
 
-    // Output the "inputs" to the aggregator.
+    // Output the "inputs" hash of the aggregator.
     assert output_ptr[0] = input_hash;
-    let output_ptr = output_ptr + 1;
+    let output_ptr = &output_ptr[1];
 
     // Output the combined result. This represents the "output" of the aggregator.
     memcpy(dst=output_ptr, src=&applicative_result, len=ApplicativeResult.SIZE);
-
     let output_ptr = &output_ptr[ApplicativeResult.SIZE];
 
     return ();
-}
-
-func hash_nodes(nodes: ApplicativeResult*, nodes_len: felt, output: felt*) {
-    if (nodes_len == 0) {
-        return ();
-    }
-
-    let (node_hash: felt) = poseidon_hash_many(n=ApplicativeResult.SIZE, elements=nodes);
-    assert output[0] = node_hash;
-
-    return hash_nodes(nodes=&nodes[1], nodes_len=nodes_len - 1, output=&output[1]);
 }
