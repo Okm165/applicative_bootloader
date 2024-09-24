@@ -1,8 +1,8 @@
 from typing import List
 import marshmallow_dataclass
-from starkware.starkware_utils.validated_dataclass import ValidatedMarshmallowDataclass
 from dataclasses import field
 import marshmallow.fields as mfields
+from starkware.starkware_utils.validated_dataclass import ValidatedMarshmallowDataclass
 from starkware.starkware_utils.marshmallow_dataclass_fields import additional_metadata
 from starkware.cairo.bootloaders.simple_bootloader.objects import TaskSpec, TaskSchema
 
