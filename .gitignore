@@ -97,3 +97,6 @@ ehthumbs.db
 
 # Compilation results
 *compiled.json
+
+# Zip files
+*.zip
