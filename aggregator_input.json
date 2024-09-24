@@ -1,6 +1,6 @@
 {
-    "aggregator_claim": {
-        "node_left": {
+    "aggregator_claim": [
+        {
             "aggregator_hash": 0,
             "applicative_bootloader_hash": 0,
             "node_result": {
@@ -11,7 +11,7 @@
                 "b_end": 144
             }
         },
-        "node_right": {
+        {
             "aggregator_hash": 0,
             "applicative_bootloader_hash": 0,
             "node_result": {
@@ -22,5 +22,5 @@
                 "b_end": 17711
             }
         }
-    }
+    ]
 }
