@@ -22,11 +22,13 @@ class NodeResult(ValidatedMarshmallowDataclass):
     a_end: int
     b_end: int
 
+
 @marshmallow_dataclass.dataclass(frozen=True)
 class ApplicativeResult(ValidatedMarshmallowDataclass):
     aggregator_hash: int
     applicative_bootloader_hash: int
     node_result: NodeResult
+
 
 @marshmallow_dataclass.dataclass(frozen=True)
 class AggregatorClaim(ValidatedMarshmallowDataclass):
