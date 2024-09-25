@@ -1,6 +1,6 @@
 %builtins output pedersen range_check bitwise poseidon
 
-from objects import NodeClaim, NodeResult
+from objects import NodeClaim, NodeResult, ApplicativeResult, applicative_result_serialize
 from starkware.cairo.common.memcpy import memcpy
 from starkware.cairo.common.registers import get_fp_and_pc
 
@@ -27,9 +27,19 @@ func main{output_ptr: felt*, pedersen_ptr: felt*, range_check_ptr: felt*, bitwis
         b_end=b_end,
     );
 
-    memcpy(dst=output_ptr, src=&node_result, len=NodeResult.SIZE);
+    local applicative_result: ApplicativeResult = ApplicativeResult(
+        aggregator_hash=0,
+        applicative_bootloader_hash=0,
+        node_result=&node_result,
+    );
 
-    let output_ptr = &output_ptr[NodeResult.SIZE];
+    // Output the applicative result.
+    memcpy(
+        dst=output_ptr,
+        src=applicative_result_serialize(obj=&applicative_result),
+        len=ApplicativeResult.SIZE + NodeResult.SIZE - 1,
+    );
+    let output_ptr = &output_ptr[ApplicativeResult.SIZE + NodeResult.SIZE - 1];
 
     return ();
 }
