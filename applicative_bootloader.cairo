@@ -61,9 +61,8 @@ func main{
     assert aggregator_output_start[0] = 1;
 
     // Extract the aggregator output size and program hash.
-    let aggregator_output_length = aggregator_output_end - aggregator_output_start - 1;
-    let aggregator_program_hash = aggregator_output_start[1];
-    let applicative_bootloader_hash = aggregator_output_start[2];
+    let aggregator_output_length = aggregator_output_start[1];
+    let aggregator_program_hash = aggregator_output_start[2];
     let aggregator_input_ptr = &aggregator_output_start[3];
 
     // Allocate a segment for the bootloader output.
@@ -99,15 +98,12 @@ func main{
     let poseidon_ptr: PoseidonBuiltin* = poseidon_ptr;
     local bootloader_output_end: felt* = bootloader_output_ptr;
 
-    // Extract the bootloader outputs.
-    let bootloader_output_length = bootloader_output_end - bootloader_output_start - 1;
-
     if (bootloader_output_start[0] == 1) {
         // If one cairo verifier is ran this means terminal child so assert child program to node program hash
     }
 
     if (bootloader_output_start[0] == 2) {
-        // If two cairo verifiers are ran this means tree node so applicative_bootloader program hash should be used
+        // If two cairo verifiers are ran this means tree node so applicative_bootloader program hash should be asserted
     }
 
     if (bootloader_output_start[0] != 1 and bootloader_output_start[0] != 2) {
@@ -115,7 +111,8 @@ func main{
         assert 1 = 0;
     }
 
-     let nodes_len = bootloader_output_length / BootloaderOutput.SIZE;
+    let bootloader_output_length = bootloader_output_end - bootloader_output_start - 1;
+    let nodes_len = bootloader_output_length / BootloaderOutput.SIZE;
 
     // Assert that the bootloader ran cairo0 verifiers.
     // TODO assert verifier program hash
