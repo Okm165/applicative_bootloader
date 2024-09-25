@@ -1,7 +1,0 @@
-{
-    "fibonacci_claim": {
-        "a_start": 1,
-        "b_start": 1,
-        "n": 10
-    }
-}

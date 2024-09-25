@@ -79,8 +79,8 @@ func main{
         ids.bootloader_output_ptr = segments.add()
 
         # Create the bootloader input.
-        bootloader_input = SimpleBootloaderInput(
-            tasks=[applicative_bootloader_input.tasks], fact_topologies_path=None, single_page=True
+        simple_bootloader_input = SimpleBootloaderInput(
+            tasks=applicative_bootloader_input.tasks, fact_topologies_path=None, single_page=True
         )
 
         # Change output builtin state to a different segment in preparation for running the
@@ -102,25 +102,26 @@ func main{
     // Extract the bootloader outputs.
     let bootloader_output_length = bootloader_output_end - bootloader_output_start - 1;
 
-    if (aggregator_output_start[0] == 1) {
+    if (bootloader_output_start[0] == 1) {
         // If one cairo verifier is ran this means terminal child so assert child program to node program hash
     }
 
-    if (aggregator_output_start[0] == 2) {
+    if (bootloader_output_start[0] == 2) {
         // If two cairo verifiers are ran this means tree node so applicative_bootloader program hash should be used
     }
 
-    if (aggregator_output_start[0] != 1 and aggregator_output_start[0] != 2) {
+    if (bootloader_output_start[0] != 1 and bootloader_output_start[0] != 2) {
         // unsupported variant for now
         assert 1 = 0;
     }
+
+     let nodes_len = bootloader_output_length / BootloaderOutput.SIZE;
 
     // Assert that the bootloader ran cairo0 verifiers.
     // TODO assert verifier program hash
 
     // Assert that the bootloader output agrees with the aggregator input.
     // calc poseidon hash of this output = poseidon([poseidon(ApplicativeResult) -- this part is calculated by every cairo0 verifier run this is output_hash -- omfg this connects so well])
-    let nodes_len = bootloader_output_length / BootloaderOutput.SIZE;
     let (nodes_extracted: felt*) = alloc();
     bootloader_output_extract_output_hashes(
         list=cast(&bootloader_output_start[1], BootloaderOutput*),
@@ -138,15 +139,8 @@ func main{
         output_builtin.set_state(applicative_output_builtin_state)
     %}
 
-    // Output:
-    // * The aggregator program hash.
-    // * The applicative bootloader hash.
-    assert output_ptr[0] = aggregator_program_hash;
-    assert output_ptr[1] = applicative_bootloader_hash;
-    let output_ptr = &output_ptr[2];
-
     // Output the aggregated output.
-    let aggregated_output_ptr = aggregator_input_ptr + bootloader_output_length;
+    let aggregated_output_ptr = aggregator_input_ptr + 1;
     let aggregated_output_length = aggregator_output_end - aggregated_output_ptr;
     memcpy(dst=output_ptr, src=aggregated_output_ptr, len=aggregated_output_length);
     let output_ptr = output_ptr + aggregated_output_length;

@@ -38,6 +38,7 @@ func applicative_result_serialize(obj: ApplicativeResult*) -> felt* {
 }
 
 struct BootloaderOutput {
+    output_length: felt,
     program_hash: felt,
     program_output: CairoVerifierOutput,
 }
