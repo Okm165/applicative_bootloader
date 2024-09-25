@@ -59,7 +59,10 @@ func applicative_results_calculate_hashes{poseidon_ptr: PoseidonBuiltin*}(
         return ();
     }
 
-    let (hash) = poseidon_hash_many(n=ApplicativeResult.SIZE + NodeResult.SIZE - 1, elements=applicative_result_serialize(obj=list));
+    let (hash) = poseidon_hash_many(
+        n=ApplicativeResult.SIZE + NodeResult.SIZE - 1,
+        elements=applicative_result_serialize(obj=list),
+    );
     assert output[0] = hash;
     return applicative_results_calculate_hashes(list=&list[1], len=len - 1, output=&output[1]);
 }

@@ -104,6 +104,19 @@ func main{
 
     // Ignore task length not needed that is stored in bootloader_output_start[0]
 
+    if (aggregator_output_start[0] == 1) {
+        // If one cairo verifier is ran this means terminal child so assert child program to node program hash
+    }
+
+    if (aggregator_output_start[0] == 2) {
+        // If two cairo verifiers are ran this means tree node so applicative_bootloader program hash should be used
+    }
+
+    if (aggregator_output_start[0] != 1 and aggregator_output_start[0] != 2) {
+        // unsupported variant for now
+        assert 1 = 0;
+    }
+
     // Assert that the bootloader ran cairo0 verifiers.
     // TODO assert verifier program hash
 
