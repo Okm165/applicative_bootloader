@@ -1,10 +1,10 @@
-%builtins output pedersen range_check bitwise
+%builtins output pedersen range_check bitwise poseidon
 
 from objects import NodeClaim, NodeResult
 from starkware.cairo.common.memcpy import memcpy
 from starkware.cairo.common.registers import get_fp_and_pc
 
-func main{output_ptr: felt*, pedersen_ptr: felt*, range_check_ptr: felt*, bitwise_ptr: felt*}() {
+func main{output_ptr: felt*, pedersen_ptr: felt*, range_check_ptr: felt*, bitwise_ptr: felt*, poseidon_ptr: felt*}() {
     alloc_locals;
 
     let (__fp__, _) = get_fp_and_pc();
