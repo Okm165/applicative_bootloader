@@ -102,8 +102,6 @@ func main{
     // Extract the bootloader outputs.
     let bootloader_output_length = bootloader_output_end - bootloader_output_start - 1;
 
-    // Ignore task length not needed that is stored in bootloader_output_start[0]
-
     if (aggregator_output_start[0] == 1) {
         // If one cairo verifier is ran this means terminal child so assert child program to node program hash
     }
