@@ -4,7 +4,13 @@ from objects import NodeClaim, NodeResult, ApplicativeResult, applicative_result
 from starkware.cairo.common.memcpy import memcpy
 from starkware.cairo.common.registers import get_fp_and_pc
 
-func main{output_ptr: felt*, pedersen_ptr: felt*, range_check_ptr: felt*, bitwise_ptr: felt*, poseidon_ptr: felt*}() {
+func main{
+    output_ptr: felt*,
+    pedersen_ptr: felt*,
+    range_check_ptr: felt*,
+    bitwise_ptr: felt*,
+    poseidon_ptr: felt*,
+}() {
     alloc_locals;
 
     let (__fp__, _) = get_fp_and_pc();
@@ -12,9 +18,7 @@ func main{output_ptr: felt*, pedersen_ptr: felt*, range_check_ptr: felt*, bitwis
     local fibonacci_claim: NodeClaim*;
     %{
         from objects import NodeClaim
-        ids.fibonacci_claim = segments.gen_arg(vars(
-            NodeClaim.Schema().load(program_input['fibonacci_claim'])
-        ).values())
+        ids.fibonacci_claim = segments.gen_arg(vars(NodeClaim.Schema().load(program_input)).values())
     %}
 
     let (a_end, b_end) = fib(fibonacci_claim.a_start, fibonacci_claim.b_start, fibonacci_claim.n);
@@ -28,9 +32,7 @@ func main{output_ptr: felt*, pedersen_ptr: felt*, range_check_ptr: felt*, bitwis
     );
 
     local applicative_result: ApplicativeResult = ApplicativeResult(
-        aggregator_hash=0,
-        applicative_bootloader_hash=0,
-        node_result=&node_result,
+        aggregator_hash=0, applicative_bootloader_hash=0, node_result=&node_result
     );
 
     // Output the applicative result.

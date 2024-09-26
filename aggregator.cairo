@@ -32,7 +32,7 @@ func main{
     %{
         from objects import AggregatorClaim
 
-        aggregator_claim = AggregatorClaim.Schema().load(program_input['aggregator_claim'])
+        aggregator_claim = AggregatorClaim.Schema().load(program_input)
 
         ids.nodes_len = len(aggregator_claim.nodes)
         ids.nodes = segments.gen_arg([
