@@ -5,7 +5,7 @@ from utils import cairo_run, stone_prove
 # Paths for required files
 LAYOUT = "recursive_with_poseidon"
 APPLICATIVE_BOOTLOADER_PROGRAM = "applicative_bootloader.compiled.json"
-APPLICATIVE_BOOTLOADER_PROGRAM_INPUT_FILE = "applicative_bootloader.input.json"
+APPLICATIVE_BOOTLOADER_PROGRAM_INPUT_FILE = "inputs/applicative_bootloader.input.json"
 
 
 def main():
@@ -17,7 +17,7 @@ def main():
             program_input=APPLICATIVE_BOOTLOADER_PROGRAM_INPUT_FILE,
         )
 
-        stone_prove(tmpdir=tmpdir, out_file="./proofs/node3.proof.json")
+        # stone_prove(tmpdir=tmpdir, out_file="./proofs/node3.proof.json")
 
 
 if __name__ == "__main__":

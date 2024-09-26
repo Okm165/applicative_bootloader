@@ -100,7 +100,7 @@ with open(
                             program_input={
                                 "proof": json.loads(
                                     open(
-                                        os.path.join(PROOF_FOLDER, NODE1_PROOF_FILE),
+                                        os.path.join(PROOF_FOLDER, NODE2_PROOF_FILE),
                                         "r",
                                     ).read()
                                 )
