@@ -1,7 +1,3 @@
-Here’s a refined version of your README with improved section descriptions, structure, and clarity.
-
----
-
 # Applicative Bootloader
 
 **Applicative Bootloader** is a Cairo0-based program designed to efficiently aggregate and merge proofs in a hierarchical, tree-like structure. It achieves this by verifying child proofs and applying custom aggregation logic to their outputs. The process is divided into two core operations:
@@ -66,7 +62,3 @@ To set up and run the Applicative Bootloader, follow these steps:
      ```bash
      python applicative_run.py
      ```
-
---- 
-
-This README now provides a more user-friendly, professional introduction to the project while improving readability and flow. Let me know if you'd like further tweaks!
