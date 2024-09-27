@@ -17,7 +17,9 @@ def main():
             program_input=APPLICATIVE_BOOTLOADER_PROGRAM_INPUT_FILE,
         )
 
-        # stone_prove(tmpdir=tmpdir, out_file="./proofs/node3.proof.json")
+        stone_prove(
+            tmpdir=tmpdir, out_file="./proofs/applicative_bootloader.proof.json"
+        )
 
 
 if __name__ == "__main__":
