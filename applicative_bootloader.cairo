@@ -102,7 +102,7 @@ func main{
     let nodes_len = bootloader_output_length / BootloaderOutput.SIZE;
 
     // Assert that the bootloader output agrees with the aggregator input.
-    // calc poseidon hash of this output = poseidon([poseidon(ApplicativeResult) -- this part is calculated by every cairo0 verifier run this is output_hash -- omfg this connects so well])
+    // calc poseidon hash of this output = poseidon([poseidon(ApplicativeResult) this part is calculated by every cairo0 verifier run this is output_hash])
     let (local program_hashes: felt*) = alloc();
     let (local verified_program_hashes: felt*) = alloc();
     let (local output_hashes: felt*) = alloc();
@@ -124,7 +124,7 @@ func main{
     let (input_hash: felt) = poseidon_hash_many(n=nodes_len, elements=output_hashes);
 
     // Check if aggregator program was ran on correct inputs
-    // checking guessed the inputs of the aggregator program
+    // checking the guessed inputs of the aggregator program
     assert aggregator_input_ptr[0] = input_hash;
 
     %{
