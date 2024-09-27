@@ -10,18 +10,14 @@ INPUT_FOLDER = "inputs"
 PROOF_FOLDER = "proofs"
 AGGREGATOR_PROGRAM = "aggregator.compiled.json"
 VERIFIER_PROGRAM = "cairo_verifier.compiled.json"
+NODE1_PROOF_FILE = "node1.proof.json"
+NODE2_PROOF_FILE = "node2.proof.json"
 NODE1_AR_PROGRAM_INPUT_FILE = "node1_ar.input.json"
 NODE2_AR_PROGRAM_INPUT_FILE = "node2_ar.input.json"
-APPLICTIVE_BOOTLOADER_SINGLETON1_PROOF_FILE = (
-    "applicative_bootloader_singleton1.proof.json"
-)
-APPLICTIVE_BOOTLOADER_SINGLETON2_PROOF_FILE = (
-    "applicative_bootloader_singleton2.proof.json"
-)
-APPLICTIVE_BOOTLOADER_SINGLETON_PROGRAM_INPUT_FILE = "applicative_bootloader.input.json"
+APPLICTIVE_BOOTLOADER_PROGRAM_INPUT_FILE = "applicative_bootloader.input.json"
 
 with open(
-    os.path.join(INPUT_FOLDER, APPLICTIVE_BOOTLOADER_SINGLETON_PROGRAM_INPUT_FILE), "w"
+    os.path.join(INPUT_FOLDER, APPLICTIVE_BOOTLOADER_PROGRAM_INPUT_FILE), "w"
 ) as f:
     f.write(
         json.dumps(
@@ -61,10 +57,7 @@ with open(
                             program_input={
                                 "proof": json.loads(
                                     open(
-                                        os.path.join(
-                                            PROOF_FOLDER,
-                                            APPLICTIVE_BOOTLOADER_SINGLETON1_PROOF_FILE,
-                                        ),
+                                        os.path.join(PROOF_FOLDER, NODE1_PROOF_FILE),
                                         "r",
                                     ).read()
                                 )
@@ -78,10 +71,7 @@ with open(
                             program_input={
                                 "proof": json.loads(
                                     open(
-                                        os.path.join(
-                                            PROOF_FOLDER,
-                                            APPLICTIVE_BOOTLOADER_SINGLETON2_PROOF_FILE,
-                                        ),
+                                        os.path.join(PROOF_FOLDER, NODE2_PROOF_FILE),
                                         "r",
                                     ).read()
                                 )

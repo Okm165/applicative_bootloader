@@ -1,11 +1,12 @@
+import os
 import tempfile
-
 from utils import cairo_run, stone_prove
 
 # Paths for required files
+INPUT_FOLDER = "inputs"
 LAYOUT = "recursive_with_poseidon"
 APPLICATIVE_BOOTLOADER_PROGRAM = "applicative_bootloader.compiled.json"
-APPLICATIVE_BOOTLOADER_PROGRAM_INPUT_FILE = "inputs/applicative_bootloader.input.json"
+APPLICATIVE_BOOTLOADER_PROGRAM_INPUT_FILE = "applicative_bootloader.input.json"
 
 
 def main():
@@ -14,7 +15,9 @@ def main():
             tmpdir=tmpdir,
             layout=LAYOUT,
             program=APPLICATIVE_BOOTLOADER_PROGRAM,
-            program_input=APPLICATIVE_BOOTLOADER_PROGRAM_INPUT_FILE,
+            program_input=os.path.join(
+                INPUT_FOLDER, APPLICATIVE_BOOTLOADER_PROGRAM_INPUT_FILE
+            ),
         )
 
         stone_prove(

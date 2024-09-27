@@ -20,21 +20,19 @@ struct NodeResult {
 }
 
 struct ApplicativeResult {
-    aggregator_hash: felt,
-    applicative_bootloader_hash: felt,
+    path_hash: felt,
     node_result: NodeResult*,
 }
 
 func applicative_result_serialize(obj: ApplicativeResult*) -> felt* {
     let (serialized: felt*) = alloc();
 
-    assert serialized[0] = obj.aggregator_hash;
-    assert serialized[1] = obj.applicative_bootloader_hash;
-    assert serialized[2] = obj.node_result.a_start;
-    assert serialized[3] = obj.node_result.b_start;
-    assert serialized[4] = obj.node_result.n;
-    assert serialized[5] = obj.node_result.a_end;
-    assert serialized[6] = obj.node_result.b_end;
+    assert serialized[0] = obj.path_hash;
+    assert serialized[1] = obj.node_result.a_start;
+    assert serialized[2] = obj.node_result.b_start;
+    assert serialized[3] = obj.node_result.n;
+    assert serialized[4] = obj.node_result.a_end;
+    assert serialized[5] = obj.node_result.b_end;
 
     return serialized;
 }
@@ -46,11 +44,7 @@ struct BootloaderOutput {
 }
 
 func bootloader_output_extract_output_hashes(
-    list: BootloaderOutput*,
-    len: felt,
-    program_hashes: felt*,
-    verified_program_hashes: felt*,
-    output_hashes: felt*,
+    list: BootloaderOutput*, len: felt, verified_program_hashes: felt*, output_hashes: felt*
 ) {
     if (len == 0) {
         return ();
@@ -60,13 +54,11 @@ func bootloader_output_extract_output_hashes(
     assert list[0].program_hash = CAIRO_VERIFIER_HASH;
 
     // extract only output_hash of node
-    assert program_hashes[0] = list[0].program_hash;
     assert verified_program_hashes[0] = list[0].program_output.program_hash;
     assert output_hashes[0] = list[0].program_output.output_hash;
     return bootloader_output_extract_output_hashes(
         list=&list[1],
         len=len - 1,
-        program_hashes=&program_hashes[1],
         verified_program_hashes=&verified_program_hashes[1],
         output_hashes=&output_hashes[1],
     );

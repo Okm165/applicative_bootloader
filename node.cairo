@@ -32,7 +32,7 @@ func main{
     );
 
     local applicative_result: ApplicativeResult = ApplicativeResult(
-        aggregator_hash=0, applicative_bootloader_hash=0, node_result=&node_result
+        path_hash=0, node_result=&node_result
     );
 
     // Output the applicative result.

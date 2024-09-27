@@ -103,20 +103,17 @@ func main{
 
     // Assert that the bootloader output agrees with the aggregator input.
     // calc poseidon hash of this output = poseidon([poseidon(ApplicativeResult) this part is calculated by every cairo0 verifier run this is output_hash])
-    let (local program_hashes: felt*) = alloc();
     let (local verified_program_hashes: felt*) = alloc();
     let (local output_hashes: felt*) = alloc();
     bootloader_output_extract_output_hashes(
         list=cast(&bootloader_output_start[1], BootloaderOutput*),
         len=nodes_len,
-        program_hashes=program_hashes,
         verified_program_hashes=verified_program_hashes,
         output_hashes=output_hashes,
     );
 
     %{
         for i in range(ids.nodes_len):
-            print("program_hashes", memory[ids.program_hashes + i])
             print("verified_program_hashes", memory[ids.verified_program_hashes + i])
             print("output_hashes", memory[ids.output_hashes + i])
     %}
@@ -135,6 +132,18 @@ func main{
     // Output the aggregated output.
     let aggregated_output_ptr = aggregator_input_ptr + 1;
     let aggregated_output_length = aggregator_output_end - aggregated_output_ptr;
+
+    let (path_hash_buff: felt*) = alloc();
+    assert path_hash_buff[0] = aggregated_output_ptr[0];  // aggregator program path_hash
+    assert path_hash_buff[1] = aggregator_program_hash;  // aggregator hash in this run
+    assert path_hash_buff[2] = verified_program_hashes[0];  // child program hash
+    assert path_hash_buff[3] = verified_program_hashes[1];  // child program hash
+
+    let (path_hash: felt) = poseidon_hash_many(n=4, elements=path_hash_buff);
+
+    assert output_ptr[0] = path_hash;
+    let output_ptr = &output_ptr[1];
+
     memcpy(dst=output_ptr, src=aggregated_output_ptr, len=aggregated_output_length);
     let output_ptr = output_ptr + aggregated_output_length;
 

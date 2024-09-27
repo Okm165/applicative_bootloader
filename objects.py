@@ -25,8 +25,7 @@ class NodeResult(ValidatedMarshmallowDataclass):
 
 @marshmallow_dataclass.dataclass(frozen=True)
 class ApplicativeResult(ValidatedMarshmallowDataclass):
-    aggregator_hash: int
-    applicative_bootloader_hash: int
+    path_hash: int
     node_result: NodeResult
 
 

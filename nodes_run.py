@@ -8,8 +8,8 @@ from utils import cairo_run, stone_prove
 # Paths for required files
 LAYOUT = "recursive_with_poseidon"
 NODE_PROGRAM = "node.compiled.json"
-NODE1_PROGRAM_INPUT_FILE = "node1.input.json"
-NODE2_PROGRAM_INPUT_FILE = "node2.input.json"
+NODE1_PROGRAM_INPUT_FILE = "inputs/node1.input.json"
+NODE2_PROGRAM_INPUT_FILE = "inputs/node2.input.json"
 AGGREGATOR_PROGRAM = "aggregator.compiled.json"
 AGGREGATOR_PROGRAM_INPUT_FILE = "aggregator.input.json"
 

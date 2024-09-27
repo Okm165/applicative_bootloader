@@ -38,57 +38,38 @@ func main{
         ids.nodes = segments.gen_arg([
             item 
             for node in aggregator_claim.nodes
-            for item in [node.aggregator_hash, node.applicative_bootloader_hash, segments.gen_arg(vars(node.node_result).values())]
+            for item in [node.path_hash, segments.gen_arg(vars(node.node_result).values())]
         ])
     %}
 
-    if (nodes_len == 1) {
-        let node = nodes[0];
+    let node_left = nodes[0];
+    let node_right = nodes[1];
 
-        local node_result: NodeResult = NodeResult(
-            a_start=node.node_result.a_start,
-            b_start=node.node_result.b_start,
-            n=node.node_result.n,
-            a_end=node.node_result.a_end,
-            b_end=node.node_result.b_end,
-        );
+    // Ensure continuity
+    assert node_left.node_result.a_end = node_right.node_result.a_start;
+    assert node_left.node_result.b_end = node_right.node_result.b_start;
 
-        // Compose the aggregated output.
-        local result: ApplicativeResult = ApplicativeResult(
-            aggregator_hash=node.aggregator_hash,
-            applicative_bootloader_hash=node.applicative_bootloader_hash,
-            node_result=&node_result,
-        );
+    let (path_hash_buff: felt*) = alloc();
+    assert path_hash_buff[0] = node_left.path_hash;  // child path_hash
+    assert path_hash_buff[1] = node_right.path_hash;  // child path_hash
 
-        memcpy(dst=applicative_result, src=&result, len=ApplicativeResult.SIZE);
-    }
-    if (nodes_len == 2) {
-        let node_left = nodes[0];
-        let node_right = nodes[1];
+    let (path_hash: felt) = poseidon_hash_many(n=2, elements=path_hash_buff);
 
-        // Ensure continuity
-        assert node_left.node_result.a_end = node_right.node_result.a_start;
-        assert node_left.node_result.b_end = node_right.node_result.b_start;
-        assert node_left.aggregator_hash = node_right.aggregator_hash;
-        assert node_left.applicative_bootloader_hash = node_right.applicative_bootloader_hash;
+    local node_result: NodeResult = NodeResult(
+        a_start=node_left.node_result.a_start,
+        b_start=node_left.node_result.b_start,
+        n=node_left.node_result.n + node_right.node_result.n,
+        a_end=node_right.node_result.a_end,
+        b_end=node_right.node_result.b_end,
+    );
 
-        local node_result: NodeResult = NodeResult(
-            a_start=node_left.node_result.a_start,
-            b_start=node_left.node_result.b_start,
-            n=node_left.node_result.n + node_right.node_result.n,
-            a_end=node_right.node_result.a_end,
-            b_end=node_right.node_result.b_end,
-        );
+    // Compose the aggregated output.
+    local result: ApplicativeResult = ApplicativeResult(
+        path_hash=path_hash, node_result=&node_result
+    );
 
-        // Compose the aggregated output.
-        local result: ApplicativeResult = ApplicativeResult(
-            aggregator_hash=node_left.aggregator_hash,
-            applicative_bootloader_hash=node_left.applicative_bootloader_hash,
-            node_result=&node_result,
-        );
+    memcpy(dst=applicative_result, src=&result, len=ApplicativeResult.SIZE);
 
-        memcpy(dst=applicative_result, src=&result, len=ApplicativeResult.SIZE);
-    }
     // Not supported to merge more then 2 nodes for now, will impl generic solution later so arbitrary positove integer num of nodes can be merged
 
     let (hashed_results: felt*) = alloc();
