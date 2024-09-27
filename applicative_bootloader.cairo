@@ -98,34 +98,30 @@ func main{
     let poseidon_ptr: PoseidonBuiltin* = poseidon_ptr;
     local bootloader_output_end: felt* = bootloader_output_ptr;
 
-    if (bootloader_output_start[0] == 1) {
-        // If one cairo verifier is ran this means terminal child so assert child program to node program hash
-    }
-
-    if (bootloader_output_start[0] == 2) {
-        // If two cairo verifiers are ran this means tree node so applicative_bootloader program hash should be asserted
-    }
-
-    if (bootloader_output_start[0] != 1 and bootloader_output_start[0] != 2) {
-        // unsupported variant for now
-        assert 1 = 0;
-    }
-
     let bootloader_output_length = bootloader_output_end - bootloader_output_start - 1;
     let nodes_len = bootloader_output_length / BootloaderOutput.SIZE;
 
-    // Assert that the bootloader ran cairo0 verifiers.
-    // TODO assert verifier program hash
-
     // Assert that the bootloader output agrees with the aggregator input.
     // calc poseidon hash of this output = poseidon([poseidon(ApplicativeResult) -- this part is calculated by every cairo0 verifier run this is output_hash -- omfg this connects so well])
-    let (nodes_extracted: felt*) = alloc();
+    let (local program_hashes: felt*) = alloc();
+    let (local verified_program_hashes: felt*) = alloc();
+    let (local output_hashes: felt*) = alloc();
     bootloader_output_extract_output_hashes(
         list=cast(&bootloader_output_start[1], BootloaderOutput*),
         len=nodes_len,
-        output=nodes_extracted,
+        program_hashes=program_hashes,
+        verified_program_hashes=verified_program_hashes,
+        output_hashes=output_hashes,
     );
-    let (input_hash: felt) = poseidon_hash_many(n=nodes_len, elements=nodes_extracted);
+
+    %{
+        for i in range(ids.nodes_len):
+            print("program_hashes", memory[ids.program_hashes + i])
+            print("verified_program_hashes", memory[ids.verified_program_hashes + i])
+            print("output_hashes", memory[ids.output_hashes + i])
+    %}
+
+    let (input_hash: felt) = poseidon_hash_many(n=nodes_len, elements=output_hashes);
 
     // Check if aggregator program was ran on correct inputs
     // checking guessed the inputs of the aggregator program

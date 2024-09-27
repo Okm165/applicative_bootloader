@@ -3,6 +3,8 @@ from starkware.cairo.common.cairo_builtins import PoseidonBuiltin
 from starkware.cairo.cairo_verifier.objects import CairoVerifierOutput
 from starkware.cairo.common.builtin_poseidon.poseidon import poseidon_hash_many
 
+const CAIRO_VERIFIER_HASH = 1124484076121087675506348512821615562376526669646204108987754749252053847251;
+
 struct NodeClaim {
     a_start: felt,
     b_start: felt,
@@ -43,14 +45,31 @@ struct BootloaderOutput {
     program_output: CairoVerifierOutput,
 }
 
-func bootloader_output_extract_output_hashes(list: BootloaderOutput*, len: felt, output: felt*) {
+func bootloader_output_extract_output_hashes(
+    list: BootloaderOutput*,
+    len: felt,
+    program_hashes: felt*,
+    verified_program_hashes: felt*,
+    output_hashes: felt*,
+) {
     if (len == 0) {
         return ();
     }
 
+    // Assert that the bootloader ran cairo0 verifiers.
+    assert list[0].program_hash = CAIRO_VERIFIER_HASH;
+
     // extract only output_hash of node
-    assert output[0] = list[0].program_output.output_hash;
-    return bootloader_output_extract_output_hashes(list=&list[1], len=len - 1, output=&output[1]);
+    assert program_hashes[0] = list[0].program_hash;
+    assert verified_program_hashes[0] = list[0].program_output.program_hash;
+    assert output_hashes[0] = list[0].program_output.output_hash;
+    return bootloader_output_extract_output_hashes(
+        list=&list[1],
+        len=len - 1,
+        program_hashes=&program_hashes[1],
+        verified_program_hashes=&verified_program_hashes[1],
+        output_hashes=&output_hashes[1],
+    );
 }
 
 func applicative_results_calculate_hashes{poseidon_ptr: PoseidonBuiltin*}(
