@@ -43,7 +43,7 @@ To set up and run the Applicative Bootloader, follow these steps:
 
 2. Set up the environment and compile:
    ```bash
-   ./setup.sh && ./compile
+   ./setup.sh && ./compile.sh
    export PYTHONPATH=.:cairo-lang
    ```
 
