@@ -100,3 +100,8 @@ ehthumbs.db
 
 # Zip files
 *.zip
+
+# Ignore certificate files
+*.crt
+*.key
+prove.sh
